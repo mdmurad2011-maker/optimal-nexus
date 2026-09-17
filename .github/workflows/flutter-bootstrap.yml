@@ -1,0 +1,63 @@
+name: Bootstrap OPTIMAL NEXUS Flutter
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Create Flutter project
+        run: |
+          if [ ! -f mobile/pubspec.yaml ]; then
+            rm -rf mobile
+            flutter create \
+              --org com.optimaltechnologies \
+              --project-name optimal_nexus \
+              mobile
+          fi
+
+      - name: Add project README
+        run: |
+          cat > mobile/README.md <<'EOF'
+          # OPTIMAL NEXUS Mobile
+
+          Real Flutter client for the OPTIMAL NEXUS remote-support platform.
+
+          ## Planned Core Functions
+
+          - Authentication
+          - Support ID
+          - Device registration
+          - Remote support requests
+          - Connection approval
+          - WebRTC signaling
+          - Screen sharing
+          - Session management
+          EOF
+
+      - name: Commit generated Flutter project
+        run: |
+          git config user.name "OPTIMAL NEXUS Bot"
+          git config user.email "actions@github.com"
+
+          git add mobile
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Bootstrap OPTIMAL NEXUS Flutter application"
+            git push
+          fi
