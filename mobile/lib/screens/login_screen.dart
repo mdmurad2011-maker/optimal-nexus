@@ -135,13 +135,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-                    child: const Icon(
-                      Icons.hub_rounded,
-                      size: 50,
-                      color: _background,
-                    ),
-                  ),
-                ),
+                    child: ClipRRect(
+  borderRadius: BorderRadius.circular(23),
+  child: Image.asset(
+    'assets/branding/optimal_nexus_icon.png',
+    fit: BoxFit.cover,
+  ),
+  ),
+  ),
 
                 const SizedBox(height: 24),
 
